@@ -1,0 +1,4 @@
+﻿managed_by: PUBLISH-RULMERA-OPA.ps1
+kind: Water-AI mirror from Rulmera-OPA/20-Water-AI
+source_of_truth: local Obsidian Vault
+external_raw_files: excluded
