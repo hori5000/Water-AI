@@ -1,4 +1,7 @@
 ﻿managed_by: PUBLISH-RULMERA-OPA.ps1
-kind: Water-AI mirror from Rulmera-OPA/20-Water-AI
+publisher_config: PUBLISH-PROJECTS.json
+kind: Project mirror: water-ai
+source: Rulmera-OPA/20-Water-AI
+target_role: developer-mirror
 source_of_truth: local Obsidian Vault
 external_raw_files: excluded
