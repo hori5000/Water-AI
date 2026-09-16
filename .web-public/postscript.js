@@ -1214,7 +1214,7 @@ tiny-lru/dist/tiny-lru.js:
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[c]))
 
-  const typeLabel = (t) => ({ added: "異붽?", modified: "?섏젙", deleted: "??젣", current: "理쒓렐" }[t] || "蹂寃?)
+  const typeLabel = (t) => ({ added: "추가", modified: "수정", deleted: "삭제", current: "최근" }[t] || "변경")
 
   function addStyles() {
     if (document.getElementById("rulmera-update-style")) return
@@ -1265,14 +1265,14 @@ tiny-lru/dist/tiny-lru.js:
     const tag = `<span class="ru-chip type-${esc(c.type)}">${esc(typeLabel(c.type))}</span>`
     const cat = c.category ? `<span class="ru-chip">${esc(c.category)}</span>` : ""
     const body = `${tag}${cat}`
-    const html = `<div class="ru-row">${body}</div><div class="ru-item-title">${esc(c.title)}</div><div class="ru-item-summary">${esc(c.summary)}</div><div class="ru-path">${esc(c.changed_at || "")} 쨌 ${esc(c.path || "")}</div>`
+    const html = `<div class="ru-row">${body}</div><div class="ru-item-title">${esc(c.title)}</div><div class="ru-item-summary">${esc(c.summary)}</div><div class="ru-path">${esc(c.changed_at || "")} · ${esc(c.path || "")}</div>`
     if (!c.href) return `<div class="ru-item">${html}</div>`
     return `<a class="ru-item" href="${esc(encodeURI(c.href))}">${html}</a>`
   }
 
   function renderList(d, limit = 10) {
     const list = Array.isArray(d.changes) ? d.changes.slice(0, limit) : []
-    return list.length ? list.map(changeHtml).join("") : `<div class="ru-empty">?대쾲 諛고룷?먮뒗 ?ъ슜?먯뿉寃?蹂댁뿬以?臾몄꽌 蹂寃쎌씠 ?놁뒿?덈떎.</div>`
+    return list.length ? list.map(changeHtml).join("") : `<div class="ru-empty">이번 배포에는 사용자에게 보여줄 문서 변경이 없습니다.</div>`
   }
 
   function updateBadge(d) {
@@ -1289,8 +1289,8 @@ tiny-lru/dist/tiny-lru.js:
       bell = document.createElement("button")
       bell.type = "button"
       bell.className = "ru-bell"
-      bell.setAttribute("aria-label", "?꾨줈?앺듃 蹂寃쎌궗??)
-      bell.innerHTML = `?뵒<span class="ru-badge" hidden></span>`
+      bell.setAttribute("aria-label", "프로젝트 변경사항")
+      bell.innerHTML = `🔔<span class="ru-badge" hidden></span>`
       bell.addEventListener("click", () => togglePanel())
       document.body.appendChild(bell)
     }
@@ -1302,13 +1302,13 @@ tiny-lru/dist/tiny-lru.js:
     if (!p) {
       p = document.createElement("section")
       p.className = "ru-panel"
-      p.setAttribute("aria-label", "?꾨줈?앺듃 蹂寃쎌궗???뚮┝?쇳꽣")
+      p.setAttribute("aria-label", "프로젝트 변경사항 알림센터")
       document.body.appendChild(p)
     }
     p.innerHTML = `
-      <div class="ru-head"><div class="ru-head-main"><div class="ru-kicker">PROJECT UPDATE</div><div class="ru-title">理쒓렐 蹂寃쎌궗??/div><div class="ru-meta">${esc(d.generated_at?.replace("T", " ").slice(0,16) || "")} 쨌 ${esc(d.version || "")}</div></div><button class="ru-close" type="button" aria-label="?リ린">횞</button></div>
+      <div class="ru-head"><div class="ru-head-main"><div class="ru-kicker">PROJECT UPDATE</div><div class="ru-title">최근 변경사항</div><div class="ru-meta">${esc(d.generated_at?.replace("T", " ").slice(0,16) || "")} · ${esc(d.version || "")}</div></div><button class="ru-close" type="button" aria-label="닫기">×</button></div>
       <div class="ru-list">${renderList(d, 8)}</div>
-      <div class="ru-actions"><a class="ru-btn" href="${esc(encodeURI(d.history_url || "/00-?꾨줈?앺듃愿由?00-怨좉컼-吏꾪뻾?꾪솴"))}">?꾩껜 吏꾪뻾?꾪솴</a><button class="ru-btn primary ru-mark-seen" type="button">?뺤씤</button></div>`
+      <div class="ru-actions"><a class="ru-btn" href="${esc(encodeURI(d.history_url || "/00-프로젝트관리/00-고객-진행현황"))}">전체 진행현황</a><button class="ru-btn primary ru-mark-seen" type="button">확인</button></div>`
     p.querySelector(".ru-close")?.addEventListener("click", () => p.classList.remove("open"))
     p.querySelector(".ru-mark-seen")?.addEventListener("click", () => { markSeen(d); p.classList.remove("open") })
   }
@@ -1332,10 +1332,10 @@ tiny-lru/dist/tiny-lru.js:
     }
     const modal = overlay.querySelector(".ru-modal")
     modal.innerHTML = `
-      <div class="ru-head"><div class="ru-head-main"><div class="ru-kicker">WATER-AI 쨌 UPDATE</div><div class="ru-title">?꾨줈?앺듃 蹂寃쎌궗??/div><div class="ru-meta">??諛고룷?먯꽌 ${esc(d.total_changes || 0)}嫄댁쓽 臾몄꽌 蹂寃쎌씠 ?뺤씤?섏뿀?듬땲??</div></div><button class="ru-close" type="button" aria-label="?섏쨷??蹂닿린">횞</button></div>
-      <div class="ru-modal-banner">${d.initial ? "蹂寃??뚮┝ 湲곕뒫??泥섏쓬 ?곸슜?섏뼱 理쒓렐 媛깆떊 臾몄꽌瑜?湲곗??쇰줈 ?쒖떆?⑸땲??" : "???뚮┝? 媛숈? 釉뚮씪?곗??먯꽌 踰꾩쟾????踰덈쭔 ?쒖떆?⑸땲?? ?곗륫 ?곷떒 ?뵒?먯꽌 ?몄젣???ㅼ떆 蹂????덉뒿?덈떎."}</div>
+      <div class="ru-head"><div class="ru-head-main"><div class="ru-kicker">WATER-AI · UPDATE</div><div class="ru-title">프로젝트 변경사항</div><div class="ru-meta">새 배포에서 ${esc(d.total_changes || 0)}건의 문서 변경이 확인되었습니다.</div></div><button class="ru-close" type="button" aria-label="나중에 보기">×</button></div>
+      <div class="ru-modal-banner">${d.initial ? "변경 알림 기능이 처음 적용되어 최근 갱신 문서를 기준으로 표시합니다." : "이 알림은 같은 브라우저에서 버전당 한 번만 표시됩니다. 우측 상단 🔔에서 언제든 다시 볼 수 있습니다."}</div>
       <div class="ru-list">${renderList(d, 10)}</div>
-      <div class="ru-actions"><button class="ru-btn ru-later" type="button">?섏쨷??蹂닿린</button><a class="ru-btn" href="${esc(encodeURI(d.history_url || "/00-?꾨줈?앺듃愿由?00-怨좉컼-吏꾪뻾?꾪솴"))}">吏꾪뻾?꾪솴 蹂닿린</a><button class="ru-btn primary ru-confirm" type="button">?뺤씤</button></div>`
+      <div class="ru-actions"><button class="ru-btn ru-later" type="button">나중에 보기</button><a class="ru-btn" href="${esc(encodeURI(d.history_url || "/00-프로젝트관리/00-고객-진행현황"))}">진행현황 보기</a><button class="ru-btn primary ru-confirm" type="button">확인</button></div>`
     const later = () => { dismissSession(d); overlay.classList.remove("open") }
     modal.querySelector(".ru-close")?.addEventListener("click", later)
     modal.querySelector(".ru-later")?.addEventListener("click", later)
